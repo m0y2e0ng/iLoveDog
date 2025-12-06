@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by yeonmi257 (http://jsbin.com/ravumuc/4/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Poodle Pattern Studio</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    (function (d) {
+      var config = {
+        kitId: 'sjv4pxs',
+        scriptTimeout: 3000,
+        async: true
+      },
+        h = d.documentElement, t = setTimeout(function () { h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive"; }, config.scriptTimeout), tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a; h.className += " wf-loading"; tk.src = 'https://use.typekit.net/' + config.kitId + '.js'; tk.async = true; tk.onload = tk.onreadystatechange = function () { a = this.readyState; if (f || a && a != "complete" && a != "loaded") return; f = true; clearTimeout(t); try { Typekit.load(config) } catch (e) { } }; s.parentNode.insertBefore(tk, s)
+    })(document);
+  </script>
+
+  <style>
+    :root {
+      --primary-color: #B08968;
+      --primary-hover: #967259;
+      --accent-color: #FF8E72;
+      --bg-color: #FFF8F0;
+      --sidebar-bg: #FFFFFF;
+      --text-color: #5D4037;
+      --card-bg: #FFFCF9;
+      --border-color: #E6DCC8;
+    }
+
+    body {
+      font-family: 'Nunito', system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+    }
+
+    /* === 왼쪽 사이드바 (컨트롤 패널) === */
+    .sidebar {
+      width: 340px;
+      background-color: var(--sidebar-bg);
+      padding: 30px 25px;
+      border-right: 1px solid var(--border-color);
+      overflow-y: auto;
+      box-shadow: 4px 0 15px rgba(139, 69, 19, 0.05);
+      /* 갈색톤 그림자 */
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    h3 {
+      font-family: "agahnsangsoo2012", sans-serif;
+      font-weight: 700;
+      font-style: normal;
+      font-size: 48px;
+      margin: 0 0 10px 0;
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* === 컨트롤 카드 스타일 === */
+    .control-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      /* 더 둥글게 */
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+
+    label {
+      display: block;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #8D6E63;
+      /* 부드러운 브라운 */
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* === 색상 버튼 스타일 === */
+    .color-palette {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .color-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      /* 통통 튀는 효과 */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .color-btn:hover {
+      transform: scale(1.15);
+    }
+
+    /* 활성화된 버튼 효과 */
+    .color-btn.active {
+      border-color: var(--primary-color);
+      transform: scale(1.15);
+      box-shadow: 0 0 0 3px rgba(176, 137, 104, 0.2);
+    }
+
+    .no-bg-btn {
+      background: white;
+      border: 2px dashed #D7CCC8;
+    }
+
+    /* === 커스텀 슬라이더 (Range Input) === */
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      background: transparent;
+    }
+
+    input[type=range]:focus {
+      outline: none;
+    }
+
+    /* 슬라이더 트랙 */
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 10px;
+      cursor: pointer;
+      background: #EFEBE9;
+      border-radius: 6px;
+    }
+
+    /* 슬라이더 손잡이 */
+    input[type=range]::-webkit-slider-thumb {
+      height: 22px;
+      width: 22px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -6px;
+      /* 트랙 중앙 정렬 */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      border: 3px solid white;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+      background: var(--primary-hover);
+      transform: scale(1.1);
+    }
+
+    .value-display {
+      float: right;
+      color: var(--primary-color);
+      font-weight: 800;
+      background: #EFEBE9;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 12px;
+    }
+
+    /* === 다운로드 버튼 === */
+    .download-btn {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #8D6E63 90%);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 4px 10px rgba(141, 110, 99, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .download-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(141, 110, 99, 0.4);
+    }
+
+    .download-btn:active {
+      transform: translateY(-1px);
+    }
+
+    /* === 메인 캔버스 영역 === */
+    .main-content {
+      flex: 1;
+      background-color: var(--bg-color);
+      background-image: radial-gradient(#E6DCC8 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      position: relative;
+    }
+
+    .pattern-title {
+      font-family: "agahnsangsoo2012", sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      font-style: normal;
+      color: #5D4037;
+      margin-bottom: 25px;
+      letter-spacing: -0.5px;
+    }
+
+    canvas {
+      box-shadow: 0 20px 40px rgba(93, 64, 55, 0.15);
+      background: white;
+      border-radius: 20px;
+
+      /* 반응형 크기 설정 (비율 유지) */
+      width: min(100%, 75vh);
+      height: auto;
+      aspect-ratio: 1/1;
+
+      transition: transform 0.3s ease;
+      border: 8px solid white;
+      object-fit: contain;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="sidebar">
+    <h3><a href="index.html" style="text-decoration: none; color: inherit;">iLoveDog</a></h3>
+
+    <div class="control-card">
+      <label>Background Color</label>
+      <div class="color-palette" id="bgGroup">
+        <button class="color-btn active" style="background:#DBCCB2"
+          onclick="updateConfig('bgColor', '#DBCCB2', this)"></button>
+        <button class="color-btn" style="background:#A2C4CF"
+          onclick="updateConfig('bgColor', '#A2C4CF', this)"></button>
+        <button class="color-btn" style="background:#A6C899"
+          onclick="updateConfig('bgColor', '#A6C899', this)"></button>
+        <button class="color-btn" style="background:#1A1A1A"
+          onclick="updateConfig('bgColor', '#1A1A1A', this)"></button>
+      </div>
+    </div>
+
+    <div class="control-card">
+      <label>Point Color (Heart)</label>
+      <div class="color-palette" id="pointGroup">
+        <button class="color-btn active" style="background:#FFDBE7"
+          onclick="updateConfig('pointColor', '#FFDBE7', this)"></button>
+        <button class="color-btn" style="background:#FFDEA6"
+          onclick="updateConfig('pointColor', '#FFDEA6', this)"></button>
+        <button class="color-btn" style="background:#CDEDCD"
+          onclick="updateConfig('pointColor', '#CDEDCD', this)"></button>
+        <button class="color-btn" style="background:#A30018"
+          onclick="updateConfig('pointColor', '#A30018', this)"></button>
+      </div>
+    </div>
+
+    <div class="control-card">
+      <label>Pixel Size <span id="scaleVal" class="value-display">3</span></label>
+      <input type="range" min="1" max="8" step="0.5" value="3" oninput="updateConfig('scale', this.value)">
+    </div>
+
+    <div class="control-card">
+      <label>Rotation <span id="rotateVal" class="value-display">0°</span></label>
+      <input type="range" min="0" max="360" value="0" oninput="updateConfig('rotation', this.value)">
+    </div>
+
+    <button class="download-btn" onclick="downloadPattern()">Save My Pattern</button>
+  </div>
+
+  <div class="main-content">
+    <div class="pattern-title">Poodle Pattern</div>
+    <canvas id="poodleCanvas" width="800" height="800"></canvas>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('poodleCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // === 데이터 (푸들 전용) ===
+    const MAIN_PIXELS = ["          ", " HH  HHHHHH  HH ", "HAAFGFFAAFFGFAAH", "HAAAAAAAAAAAAAAH", "HFFAAAAAAAAAAFFH", " HHFAAAAAAAAFHH ", "   GAEAAAAEAG   ", "  HFAAAHHAAAFH  ", "  HFAAAAAAAAFH  ", "   HGFAAAAFGH   ", "    HHGGGGHH    "];
+    const SUB_PIXELS = ["         ", "         ", "  WW WW  ", " WWWWWWW ", " WWWWWWW ", "  WWWWW  ", "   WWW   ", "    W    "];
+    const DECO_PIXELS = [" K ", "K K", " K "];
+    const SUB_COLOR_KEY = 'W';
+
+    const COLORS = {
+      'A': '#BE845D', 'B': '#dbaa7d', 'C': '#8c694b', 'D': '#b78b63',
+      'E': '#000000', 'F': '#9D6742', 'G': '#6d431d', 'H': '#4c2e13',
+      'I': '#930d0d', 'J': '#ffb048', 'K': '#ffe948', 'L': '#ffd2cc',
+      'M': '#513a25', 'N': '#ffffff', 'O': '#ed6a58', 'P': '#EE899C',
+      'Q': '#d7e1e2', 'R': '#e24217', 'S': '#69797a', 'T': '#f4c290',
+      'U': '#6fd146', 'V': '#93E1A4', 'W': '#FF0000', ' ': null
+    };
+
+    // **중요: 초기 설정값을 첫 번째 버튼 색상과 일치시킴**
+    let config = { scale: 3, rotation: 0, bgColor: '#DBCCB2', pointColor: '#FFDBE7' };
+    const BASE_GAP_DOTS = 6;
+
+    // 설정 업데이트 함수 (버튼 클릭 시 UI 활성화 처리 추가)
+    function updateConfig(key, value, btnElement) {
+      // 값 변경
+      config[key] = (key === 'scale' || key === 'rotation') ? Number(value) : value;
+
+      // 버튼 스타일 처리 (색상 버튼인 경우)
+      if (btnElement) {
+        // 해당 버튼이 속한 그룹(부모)을 찾아서, 그 안의 모든 버튼 active 제거
+        const group = btnElement.parentElement;
+        const buttons = group.querySelectorAll('.color-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        // 클릭된 버튼만 active 추가
+        btnElement.classList.add('active');
+      }
+
+      // 텍스트 업데이트 (슬라이더인 경우)
+      if (key === 'scale') document.getElementById('scaleVal').innerText = value;
+      if (key === 'rotation') document.getElementById('rotateVal').innerText = value + '°';
+
+      drawScene();
+    }
+
+    function pseudoRandom(x, y) {
+      const val = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
+      return val - Math.floor(val);
+    }
+
+    function drawPixelArt(pixelArray, cx, cy, isSubItem) {
+      const pixelSize = config.scale;
+      const cols = Math.max(...pixelArray.map(row => row.length));
+      const rows = pixelArray.length;
+      const w = cols * pixelSize;
+      const h = rows * pixelSize;
+
+      ctx.save();
+      ctx.translate(cx - w / 2, cy - h / 2);
+
+      for (let r = 0; r < rows; r++) {
+        const rowStr = pixelArray[r];
+        for (let c = 0; c < rowStr.length; c++) {
+          const char = rowStr[c];
+          let color = COLORS[char];
+          if (isSubItem && char === SUB_COLOR_KEY) color = config.pointColor;
+          if (!isSubItem && (char === 'W' || char === 'K')) {
+            color = (char === 'K') ? "#FFFFFF" : config.pointColor;
+          }
+          if (color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(c * pixelSize, r * pixelSize, pixelSize + 0.6, pixelSize + 0.6);
+          }
+        }
+      }
+      ctx.restore();
+    }
+
+    function drawScene() {
+      ctx.fillStyle = config.bgColor;
+      ctx.fillRect(-canvas.width, -canvas.height, canvas.width * 3, canvas.height * 3);
+
+      const pixelSize = config.scale;
+      const mainCols = Math.max(...MAIN_PIXELS.map(row => row.length));
+      const mainRows = MAIN_PIXELS.length;
+      const stepX = (mainCols + BASE_GAP_DOTS) * pixelSize;
+      const stepY = (mainRows + BASE_GAP_DOTS) * pixelSize;
+
+      ctx.save();
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate(config.rotation * Math.PI / 180);
+
+      const buffer = 2.5;
+      const cols = Math.ceil((canvas.width * buffer) / stepX);
+      const rows = Math.ceil((canvas.height * buffer) / stepY);
+
+      for (let r = -rows; r < rows; r++) {
+        for (let c = -cols; c < cols; c++) {
+          let x = c * stepX;
+          let y = r * stepY;
+          if (r % 2 !== 0) x += stepX / 2;
+
+          const randVal = pseudoRandom(c, r);
+          const posJitter = (randVal - 0.5) * pixelSize * 2;
+          x += posJitter; y += posJitter;
+
+          if (c % 2 === 0) {
+            drawPixelArt(MAIN_PIXELS, x, y, false);
+          } else {
+            drawPixelArt(SUB_PIXELS, x, y, true);
+          }
+
+          if (pseudoRandom(c + 100, r + 100) > 0.3) {
+            drawPixelArt(DECO_PIXELS, x + stepX / 2, y + stepY / 2, true);
+          }
+        }
+      }
+      ctx.restore();
+    }
+
+    function downloadPattern() {
+      const link = document.createElement('a');
+      link.download = `poodle-pattern.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    window.onload = drawScene;
+  </script>
+</body>
+
+</html>

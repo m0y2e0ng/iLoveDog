@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2025 by yeonmi257 (http://jsbin.com/pepivaz/9/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yummy Pattern Studio</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    (function (d) {
+      var config = {
+        kitId: 'sjv4pxs',
+        scriptTimeout: 3000,
+        async: true
+      },
+        h = d.documentElement, t = setTimeout(function () { h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive"; }, config.scriptTimeout), tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a; h.className += " wf-loading"; tk.src = 'https://use.typekit.net/' + config.kitId + '.js'; tk.async = true; tk.onload = tk.onreadystatechange = function () { a = this.readyState; if (f || a && a != "complete" && a != "loaded") return; f = true; clearTimeout(t); try { Typekit.load(config) } catch (e) { } }; s.parentNode.insertBefore(tk, s)
+    })(document);
+  </script>
+
+  <style>
+    :root {
+      --primary-color: #E6AB97;
+      --primary-hover: #D4927D;
+      --accent-color: #F2D68C;
+      --bg-color: #FAF5F3;
+      --sidebar-bg: #FFFFFF;
+      --text-color: #6D4C41;
+      --card-bg: #FFFFFF;
+      --border-color: #E6D0C7;
+    }
+
+    body {
+      font-family: 'Nunito', system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+    }
+
+    /* === 왼쪽 사이드바 === */
+    .sidebar {
+      width: 340px;
+      min-width: 340px;
+      /* 너비가 줄어들지 않도록 고정 */
+      background-color: var(--sidebar-bg);
+      padding: 30px 25px;
+      border-right: 1px solid var(--border-color);
+      overflow-y: auto;
+      box-shadow: 4px 0 15px rgba(109, 76, 65, 0.05);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    h3 {
+      font-family: "agahnsangsoo2012", sans-serif;
+      font-weight: 700;
+      font-style: normal;
+      font-size: 48px;
+      margin: 0 0 10px 0;
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* === 컨트롤 카드 === */
+    .control-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px rgba(230, 208, 199, 0.2);
+    }
+
+    label {
+      display: block;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #A1887F;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* === 색상 버튼 === */
+    .color-palette {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .color-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .color-btn:hover {
+      transform: scale(1.15);
+    }
+
+    .color-btn.active {
+      border-color: var(--primary-color);
+      transform: scale(1.15);
+      box-shadow: 0 0 0 3px rgba(230, 171, 151, 0.3);
+    }
+
+    .no-bg-btn {
+      background: white;
+      border: 2px dashed #D7CCC8;
+    }
+
+    /* === 슬라이더 === */
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      background: transparent;
+    }
+
+    input[type=range]:focus {
+      outline: none;
+    }
+
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 10px;
+      cursor: pointer;
+      background: #E6D0C7;
+      border-radius: 6px;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      height: 22px;
+      width: 22px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -6px;
+      box-shadow: 0 2px 4px rgba(109, 76, 65, 0.2);
+      border: 3px solid white;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+      background: var(--primary-hover);
+      transform: scale(1.1);
+    }
+
+    .value-display {
+      float: right;
+      color: var(--primary-color);
+      font-weight: 800;
+      background: #FAF5F5;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 12px;
+    }
+
+    /* === 다운로드 버튼 === */
+    .download-btn {
+      width: 100%;
+      padding: 18px;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 4px 10px rgba(212, 146, 125, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+    }
+
+    .download-btn:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(212, 146, 125, 0.4);
+    }
+
+    .download-btn:active {
+      transform: translateY(-1px);
+    }
+
+    /* === 메인 캔버스 영역 === */
+    .main-content {
+      flex: 1;
+      background-color: var(--bg-color);
+      background-image: radial-gradient(#E6D0C7 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .pattern-title {
+      font-family: "agahnsangsoo2012", sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      font-style: normal;
+      color: #6D4C41;
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+      flex-shrink: 0;
+    }
+
+    canvas {
+      box-shadow: 0 20px 40px rgba(109, 76, 65, 0.1);
+      background: white;
+      border-radius: 20px;
+
+      /* 반응형 크기 설정 (비율 유지) */
+      width: min(100%, 75vh);
+      height: auto;
+      aspect-ratio: 1/1;
+
+      /* [중요] 픽셀 아트 선명하게 */
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+
+      transition: transform 0.3s ease;
+      border: 8px solid white;
+      object-fit: contain;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="sidebar">
+    <h3><a href="index.html" style="text-decoration: none; color: inherit;">iLoveDog</a></h3>
+
+    <div class="control-card">
+      <label>Background Color</label>
+      <div class="color-palette" id="bgGroup">
+        <button class="color-btn active" style="background:#FFE8E7"
+          onclick="updateConfig('bgColor', '#FFE8E7', this)"></button>
+        <button class="color-btn" style="background:#E7FEFF"
+          onclick="updateConfig('bgColor', '#E7FEFF', this)"></button>
+        <button class="color-btn" style="background:#FFFAD5"
+          onclick="updateConfig('bgColor', '#FFFAD5', this)"></button>
+        <button class="color-btn" style="background:#1A1A1A"
+          onclick="updateConfig('bgColor', '#1A1A1A', this)"></button>
+      </div>
+    </div>
+
+    <div class="control-card">
+      <label>Point Color (Yum)</label>
+      <div class="color-palette" id="pointGroup">
+        <button class="color-btn" style="background:#FF9137"
+          onclick="updateConfig('pointColor', '#FF9137', this)"></button>
+        <button class="color-btn" style="background:#CBE642"
+          onclick="updateConfig('pointColor', '#CBE642', this)"></button>
+        <button class="color-btn active" style="background:#FF5150"
+          onclick="updateConfig('pointColor', '#FF5150', this)"></button>
+        <button class="color-btn" style="background:#A30018"
+          onclick="updateConfig('pointColor', '#A30018', this)"></button>
+      </div>
+    </div>
+
+    <div class="control-card">
+      <label>Pixel Size <span id="scaleVal" class="value-display">3</span></label>
+      <input type="range" min="1" max="8" step="0.5" value="3" oninput="updateConfig('scale', this.value)">
+    </div>
+
+    <div class="control-card">
+      <label>Rotation <span id="rotateVal" class="value-display">0°</span></label>
+      <input type="range" min="0" max="360" value="0" oninput="updateConfig('rotation', this.value)">
+    </div>
+
+    <button class="download-btn" onclick="downloadPattern()">Save my Pattern</button>
+  </div>
+
+  <div class="main-content">
+    <div class="pattern-title">Yummy Pattern</div>
+    <canvas id="boneCanvas" width="800" height="800"></canvas>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('boneCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // === 데이터 (뼈다귀 전용) ===
+    const MAIN_PIXELS = ["                ", "          SSS   ", "         SNQSS  ", "         SNNNQS ",
+      "         SNQQQS ", "         SNQSSS ", "        SNQS       ", "      SSNQS       ", "   SSNNQS         ", "  SNNNNS          ", "  SQQNQS          ", "   SSQQS          ", "     SS             "];
+
+    // === 수정됨: 사료 그릇 정렬 교정 ===
+    // 밥그릇(Bowl)과 사료(Food)의 중심이 어긋나 있던 것을 가운데 정렬로 맞췄습니다.
+    const SUB_PIXELS = [
+      "                ",
+      "                ",
+      "                ",
+      "      CC        ", // 사료 위치 조정
+      "    CCDDCCC     ", // 사료 위치 조정
+      "   CDCCCCCCC    ", // 사료 위치 조정
+      "  IIIIIIIIIII   ", // 그릇 위치 조정
+      " IRRRRRPRRRRII  ",
+      " IRRRPRRRPRRRI  ",
+      "IRRRRRRPRRRRRRI ",
+      "IRRRRRPPPRRRRRI ",
+      " IIIIIIIIIIIII  ",
+      "                "
+    ]; // Food
+
+    const DECO_PIXELS = [" W ", "WWW", " W "];
+    const SUB_COLOR_KEY = 'R';
+
+    const COLORS = {
+      'A': '#BE845D', 'B': '#dbaa7d', 'C': '#8c694b', 'D': '#b78b63',
+      'E': '#000000', 'F': '#9D6742', 'G': '#6d431d', 'H': '#4c2e13',
+      'I': '#930d0d', 'J': '#ffb048', 'K': '#ffe948', 'L': '#ffd2cc',
+      'M': '#513a25', 'N': '#ffffff', 'O': '#ed6a58', 'P': '#EE899C',
+      'Q': '#d7e1e2', 'R': '#e24217', 'S': '#69797a', 'T': '#f4c290',
+      'U': '#6fd146', 'V': '#93E1A4', 'W': '#FF0000', ' ': null
+    };
+
+    // **초기 설정값 (HTML 버튼과 일치)**
+    let config = { scale: 3, rotation: 0, bgColor: '#FFE8E7', pointColor: '#FF5150' };
+    const BASE_GAP_DOTS = 6;
+
+    function updateConfig(key, value, btnElement) {
+      config[key] = (key === 'scale' || key === 'rotation') ? Number(value) : value;
+
+      if (btnElement) {
+        const group = btnElement.parentElement;
+        const buttons = group.querySelectorAll('.color-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+      }
+
+      if (key === 'scale') document.getElementById('scaleVal').innerText = value;
+      if (key === 'rotation') document.getElementById('rotateVal').innerText = value + '°';
+
+      drawScene();
+    }
+
+    function pseudoRandom(x, y) {
+      const val = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
+      return val - Math.floor(val);
+    }
+
+    function drawPixelArt(pixelArray, cx, cy, isSubItem) {
+      const pixelSize = config.scale;
+      const cols = Math.max(...pixelArray.map(row => row.length));
+      const rows = pixelArray.length;
+      const w = cols * pixelSize;
+      const h = rows * pixelSize;
+
+      ctx.save();
+      ctx.translate(cx - w / 2, cy - h / 2);
+
+      for (let r = 0; r < rows; r++) {
+        const rowStr = pixelArray[r];
+        for (let c = 0; c < rowStr.length; c++) {
+          const char = rowStr[c];
+          let color = COLORS[char];
+          if (isSubItem && char === SUB_COLOR_KEY) color = config.pointColor;
+          if (!isSubItem && (char === 'W' || char === 'K')) color = config.pointColor;
+          if (color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(c * pixelSize, r * pixelSize, pixelSize + 0.6, pixelSize + 0.6);
+          }
+        }
+      }
+      ctx.restore();
+    }
+
+    function drawScene() {
+      ctx.fillStyle = config.bgColor;
+      // 배경을 아주 크게 그려서 회전 시에도 빈 공간 없게 함
+      ctx.fillRect(-canvas.width, -canvas.height, canvas.width * 3, canvas.height * 3);
+
+      const pixelSize = config.scale;
+      const mainCols = Math.max(...MAIN_PIXELS.map(row => row.length));
+      const mainRows = MAIN_PIXELS.length;
+      const stepX = (mainCols + BASE_GAP_DOTS) * pixelSize;
+      const stepY = (mainRows + BASE_GAP_DOTS) * pixelSize;
+
+      ctx.save();
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate(config.rotation * Math.PI / 180);
+
+      const buffer = 2.5;
+      const cols = Math.ceil((canvas.width * buffer) / stepX);
+      const rows = Math.ceil((canvas.height * buffer) / stepY);
+
+      for (let r = -rows; r < rows; r++) {
+        for (let c = -cols; c < cols; c++) {
+          let x = c * stepX;
+          let y = r * stepY;
+          if (r % 2 !== 0) x += stepX / 2;
+
+          const randVal = pseudoRandom(c, r);
+          const posJitter = (randVal - 0.5) * pixelSize * 2;
+          x += posJitter; y += posJitter;
+
+          if (c % 2 === 0) {
+            drawPixelArt(MAIN_PIXELS, x, y, false);
+          } else {
+            drawPixelArt(SUB_PIXELS, x, y, true);
+          }
+
+          if (pseudoRandom(c + 100, r + 100) > 0.3) {
+            drawPixelArt(DECO_PIXELS, x + stepX / 2, y + stepY / 2, true);
+          }
+        }
+      }
+      ctx.restore();
+    }
+
+    function downloadPattern() {
+      const link = document.createElement('a');
+      link.download = `bone-pattern.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    window.onload = drawScene;
+  </script>
+</body>
+
+</html>

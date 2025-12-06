@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iLoveDog - Products</title>
+
+    <!-- 1. 어도비 폰트(Typekit) 스크립트 -->
+    <script>
+        (function (d) {
+            var config = {
+                kitId: 'sjv4pxs',
+                scriptTimeout: 3000,
+                async: true
+            },
+                h = d.documentElement, t = setTimeout(function () { h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive"; }, config.scriptTimeout), tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a; h.className += " wf-loading"; tk.src = 'https://use.typekit.net/' + config.kitId + '.js'; tk.async = true; tk.onload = tk.onreadystatechange = function () { a = this.readyState; if (f || a && a != "complete" && a != "loaded") return; f = true; clearTimeout(t); try { Typekit.load(config) } catch (e) { } }; s.parentNode.insertBefore(tk, s)
+        })(document);
+    </script>
+
+    <style>
+        /* 기본 초기화 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffffff;
+            font-family: "agahnsangsoo2012", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+            color: #333;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        /* 배경 발자국 컨테이너 */
+        #paw-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .paw-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .dynamic-paw {
+            fill: #d1d1d1;
+            opacity: 0.6;
+            transition: opacity 0.5s ease-out, transform 0.2s ease-out;
+        }
+
+        .dynamic-paw.fade-out {
+            opacity: 0;
+        }
+
+        /* 상단 고정 헤더바 */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background-color: #ffffff;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            transition: height 0.3s ease;
+        }
+
+        .header-inner {
+            width: 100%;
+            max-width: 90%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            column-gap: 20px;
+            height: 100%;
+            align-items: center;
+        }
+
+        .header-logo {
+            grid-column: 2 / 5;
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .header-nav {
+            grid-column: 8 / 12;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 40px;
+            font-size: 20px;
+            font-weight: 700;
+            padding-top: 0;
+        }
+
+        .header-nav a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        /* ★ [수정됨] 발자국 토글 버튼 스타일 (폰트 상속 및 크기 조정) */
+        #paw-toggle-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+
+            /* 텍스트 길이에 맞게 너비 자동 조절 */
+            width: auto;
+            height: auto;
+            padding: 0;
+            margin-left: 0;
+            /* gap으로 간격 조정되므로 0 */
+
+            /* ★ 핵심: 부모 폰트(안상수체) 상속받기 */
+            font-family: inherit;
+            font-size: 20px;
+            /* 메뉴와 동일한 크기 */
+            font-weight: 700;
+            /* 메뉴와 동일한 굵기 */
+
+            color: #ccc;
+            transition: color 0.3s ease, transform 0.2s ease;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            /* 글자와 아이콘 사이 간격 */
+        }
+
+        #paw-toggle-btn.active {
+            color: #333;
+            background-color: transparent;
+        }
+
+        #paw-toggle-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* svg 대신 텍스트 이모티콘을 쓰므로 svg 스타일은 제거하거나 무시됨 */
+        #paw-toggle-btn svg {
+            display: none;
+        }
+
+        /* 상단 중앙 브랜드 소개 */
+        .intro-section {
+            width: 100%;
+            max-width: 90%;
+            margin: 0 auto;
+            padding-top: 150px;
+            /* 여백 조정: 200px -> 150px */
+            padding-bottom: 40px;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+        }
+
+        .intro-section h2 {
+            font-size: 32px;
+            /* 제목 크기 키움 */
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 15px;
+            /* 제목과 본문 사이 간격 */
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .intro-section p {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.6;
+            word-break: keep-all;
+            margin: 0;
+        }
+
+        /* 전체 레이아웃 */
+        .wrapper {
+            max-width: 90%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            column-gap: 20px;
+            min-height: auto;
+            /* 100vh에서 auto로 변경하여 자연스럽게 흐르도록 함 */
+            align-items: start;
+            /* center에서 start로 변경 */
+            padding-top: 20px;
+            /* 상단 여백 축소 */
+            padding-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 왼쪽: 지그재그 패턴 리스트 */
+        .left-list {
+            grid-column: 2 / 5;
+            display: flex;
+            flex-direction: column;
+            height: 75vh;
+            min-height: 700px;
+            justify-content: space-between;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .list-item:hover {
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
+        }
+
+        .list-item:nth-child(odd):hover {
+            transform: rotate(-15deg);
+        }
+
+        .list-item:nth-child(even):hover {
+            transform: rotate(15deg);
+        }
+
+        .list-item:nth-child(even) {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        /* 이미지 컨테이너 */
+        .small-img {
+            width: 180px;
+            height: 120px;
+            background-color: #ddd;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .small-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .img-default {
+            z-index: 1;
+        }
+
+        .img-hover {
+            z-index: 2;
+            display: none;
+        }
+
+        .list-item:hover .img-hover {
+            display: block;
+        }
+
+        .text-group {
+            padding-top: 5px;
+        }
+
+        .text-group h4 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .text-group p {
+            font-size: 16px;
+            line-height: 1.5;
+            font-weight: 300;
+        }
+
+        /* 오른쪽: 슬라이드쇼 영역 */
+        .main-image-area {
+            grid-column: 5 / 12;
+            width: 85%;
+            height: 75vh;
+            min-height: 700px;
+            background-color: #fff;
+            justify-self: end;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 0.3s ease, filter 0.3s ease;
+            display: block;
+            overflow: hidden;
+        }
+
+        .slide-link.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .slide-link:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .slide-link img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 하단 푸터 */
+        .site-footer {
+            width: 100%;
+            background-color: #ffffff;
+            border-top: 1px solid #eee;
+            padding: 80px 0;
+            margin-top: 100px;
+            position: relative;
+            z-index: 2001;
+        }
+
+        .footer-inner {
+            width: 90%;
+            max-width: 90%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .footer-left .footer-logo {
+            font-size: 32px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .footer-left .footer-copy {
+            font-size: 16px;
+            color: #888;
+            line-height: 1.4;
+        }
+
+        .footer-right {
+            display: flex;
+            gap: 30px;
+        }
+
+        .footer-right a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+            font-weight: 700;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .footer-right a:hover {
+            color: #999;
+        }
+
+        /* 문의하기 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 40px;
+            width: 500px;
+            max-width: 90%;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: slideDown 0.4s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .modal h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: -1px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 700;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 16px;
+            background-color: #f9f9f9;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #555;
+        }
+
+        @media (min-width: 2000px) {
+            .site-header {
+                height: 140px;
+            }
+
+            .header-logo {
+                font-size: 70px;
+            }
+
+            .small-img {
+                width: 260px;
+                height: 180px;
+            }
+
+            .text-group h4 {
+                font-size: 40px;
+            }
+
+            .text-group p {
+                font-size: 24px;
+            }
+        }
+
+        /* --- 상품 상세 페이지 스타일 --- */
+        .product-detail-wrapper {
+            max-width: 1000px;
+            margin: 150px auto 100px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .product-main {
+            display: flex;
+            gap: 50px;
+            margin-bottom: 100px;
+            align-items: flex-start;
+        }
+
+        .product-img-area {
+            flex: 1;
+        }
+
+        .product-img-area img {
+            width: 100%;
+            border-radius: 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .product-info-area {
+            flex: 1;
+            padding-top: 10px;
+        }
+
+        .product-info-area h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 25px;
+        }
+
+        .desc {
+            font-size: 17px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 40px;
+            word-break: keep-all;
+        }
+
+        .options {
+            margin-bottom: 30px;
+        }
+
+        .options label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .options select {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 0;
+            font-family: inherit;
+            cursor: pointer;
+            background-color: #f9f9f9;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 20px;
+            background-color: #333;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .buy-btn:hover {
+            background-color: #555;
+        }
+
+        .product-detail-images {
+            text-align: center;
+            border-top: 1px solid #eee;
+            padding-top: 80px;
+        }
+
+        .product-detail-images h3 {
+            font-size: 24px;
+            margin-bottom: 50px;
+            font-weight: 700;
+        }
+
+        /* 세로 일렬 구조 레이아웃 */
+        .detail-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .detail-item img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            /* 1:1 비율 강제 */
+            object-fit: cover;
+            border-radius: 0;
+            background-color: #f0f0f0;
+        }
+
+        .detail-item p {
+            font-size: 16px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .product-main {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+                /* 모바일에서 1열 */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="paw-container">
+        <svg class="paw-svg" id="main-svg" width="100%" height="100%">
+            <defs>
+                <symbol id="paw-print" viewBox="0 0 100 85">
+                    <path d="M50 82 C 30 82, 20 60, 32 45 C 38 38, 62 38, 68 45 C 80 60, 70 82, 50 82 Z"
+                        fill="currentColor" />
+                    <ellipse cx="18" cy="35" rx="12" ry="14" transform="rotate(-30 18 35)" fill="currentColor" />
+                    <ellipse cx="40" cy="18" rx="12" ry="14" transform="rotate(-10 40 18)" fill="currentColor" />
+                    <ellipse cx="60" cy="18" rx="12" ry="14" transform="rotate(10 60 18)" fill="currentColor" />
+                    <ellipse cx="82" cy="35" rx="12" ry="14" transform="rotate(30 82 35)" fill="currentColor" />
+                </symbol>
+            </defs>
+            <g id="footprints-group"></g>
+        </svg>
+    </div>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="header-logo">iLoveDog</a>
+            <div class="header-nav">
+
+                <a href="creators.html">만든이들</a>
+                <button id="paw-toggle-btn" class="active" title="발자국 모드 끄기/켜기">
+                    <span>따라가기</span>
+                    <span class="btn-emoji">🐾</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 상품 상세 본문 -->
+    <div class="product-detail-wrapper">
+        <div class="product-main">
+            <div class="product-img-area">
+                <img src="image/Gemini_Generated_Image_f7yoi6f7yoi6f7yo.png" alt="강아지 목줄 메인">
+            </div>
+            <div class="product-info-area">
+                <h1>사랑을 담아 만든 단 하나의 목줄</h1>
+                <p class="price">35,000 KRW</p>
+                <p class="desc">
+                    우리 아이의 일상을 가장 가까이에서 지켜주는 목줄.<br>
+                    천연 가죽의 부드러움과 시간이 지날수록 깊어지는 감성을 담았습니다.<br>
+                    당신이 떠올린 반려동물의 모습 그대로,<br>
+                    이니셜 각인 서비스로 세상에 단 하나뿐인 목줄을 선물하세요.<br </p>
+
+                <div class="options">
+                    <label>패턴 선택</label>
+                    <select>
+                        <option>POODLE 🐩 (푸들)</option>
+                        <option>RETRIEVER 🦮 (리트리버)</option>
+                        <option>JINDO 🐕 (진돗개)</option>
+                        <option>HOUSE 🏠 (하우스)</option>
+                        <option>YUMMY 🍖 (간식)</option>
+                    </select>
+                </div>
+
+                <div class="options">
+                    <label>사이즈 선택</label>
+                    <select>
+                        <option>S (소형견용)</option>
+                        <option>M (중형견용)</option>
+                        <option>L (대형견용) (+5,000)</option>
+                    </select>
+                </div>
+
+                <button class="buy-btn" onclick="alert('장바구니에 담겼습니다!')">구매하기</button>
+            </div>
+        </div>
+
+        <div class="product-detail-images">
+            <h3>상세 이미지</h3>
+            <div class="detail-grid">
+                <!-- 1. Poodle Model -->
+                <div class="detail-item">
+                    <img src="image/KakaoTalk_Photo_2025-12-06-23-25-19 004.png" alt="푸들 모델 착용샷">
+                    <p><strong>POODLE Pattern</strong><br>사랑스러운 푸들 친구들이 콕콕 박힌 디자인.<br>산책길의 주인공이 되어보세요.</p>
+                </div>
+                <!-- 2. Retriever Model -->
+                <div class="detail-item">
+                    <img src="image/KakaoTalk_Photo_2025-12-06-23-25-19 003.png" alt="리트리버 모델 착용샷">
+                    <p><strong>RETRIEVER Pattern</strong><br>듬직하고 귀여운 리트리버 패턴.<br>부드러운 베이지 톤이 따뜻함을 더해줍니다.</p>
+                </div>
+                <!-- 3. Jindo Model -->
+                <div class="detail-item">
+                    <img src="image/KakaoTalk_Photo_2025-12-06-23-25-19 002.png" alt="진돗개 모델 착용샷">
+                    <p><strong>JINDO Pattern</strong><br>용맹하고 충직한 진돗개 일러스트.<br>깔끔하고 세련된 포인트가 되어줍니다.</p>
+                </div>
+                <!-- 4. House Model -->
+                <div class="detail-item">
+                    <img src="image/KakaoTalk_Photo_2025-12-06-23-25-19 005.png" alt="하우스 모델 착용샷">
+                    <p><strong>HOUSE Pattern</strong><br>포근한 우리 집을 닮은 하우스 패턴.<br>편안한 분위기를 연출합니다.</p>
+                </div>
+                <!-- 5. Yummy Model -->
+                <div class="detail-item">
+                    <img src="image/KakaoTalk_Photo_2025-12-06-23-25-18 001.png" alt="간식 모델 착용샷">
+                    <p><strong>YUMMY Pattern</strong><br>맛있는 뼈다귀 간식이 가득!<br>아이들이 가장 좋아하는 즐거운 디자인입니다.</p>
+                </div>
+                <!-- 6. Full Product Shot -->
+                <div class="detail-item">
+                    <img src="image/KakaoTalk_Photo_2025-12-06-23-25-27.jpeg" alt="전체 제품 이미지"
+                        style="aspect-ratio: auto;">
+                    <p><strong>All Products</strong><br>다섯 가지 매력적인 패턴을 한눈에.<br>취향에 맞는 디자인을 선택해보세요.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-left">
+                <span class="footer-logo">iLoveDog</span>
+                <p class="footer-copy">© 2025 iLoveDog. All rights reserved.</p>
+            </div>
+            <div class="footer-right">
+                <a href="#">인스타그램</a>
+                <a href="#">유튜브</a>
+                <a id="contact-btn">문의하기</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 문의하기 모달 -->
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>문의하기 💌</h2>
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="sender-name">이름</label>
+                    <input type="text" id="sender-name" placeholder="이름을 입력해주세요" required>
+                </div>
+                <div class="form-group">
+                    <label for="sender-email">이메일</label>
+                    <input type="email" id="sender-email" placeholder="답변 받을 이메일" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">내용</label>
+                    <textarea id="message" placeholder="문의하실 내용을 자유롭게 적어주세요 :)" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">보내기</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide-link');
+        let currentSlide = 0;
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 3000);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const group = document.getElementById("footprints-group");
+            const toggleBtn = document.getElementById("paw-toggle-btn");
+
+            let lastX = -100;
+            let lastY = -100;
+            let stepCount = 0;
+            let isPawMode = true;
+
+            toggleBtn.addEventListener('click', () => {
+                isPawMode = !isPawMode;
+                if (isPawMode) {
+                    toggleBtn.classList.add('active');
+                } else {
+                    toggleBtn.classList.remove('active');
+                }
+            });
+
+            const checkScreenSize = () => window.innerWidth >= 1600;
+
+            document.addEventListener('mousemove', (e) => {
+                const isLargeScreen = checkScreenSize();
+                const stepDistance = isLargeScreen ? 60 : 40;
+                const pawSize = isLargeScreen ? 25 : 18;
+                const pawSpread = isLargeScreen ? 15 : 10;
+
+                const currentX = e.clientX;
+                const currentY = e.clientY;
+                const dist = Math.sqrt(Math.pow(currentX - lastX, 2) + Math.pow(currentY - lastY, 2));
+
+                if (dist > stepDistance && isPawMode) {
+                    createPaw(currentX, currentY, lastX, lastY, pawSize, pawSpread);
+                    lastX = currentX;
+                    lastY = currentY;
+                    stepCount++;
+                }
+            });
+
+            function createPaw(x, y, prevX, prevY, size, spread) {
+                const angle = Math.atan2(y - prevY, x - prevX);
+                const isRightPaw = stepCount % 2 !== 0;
+                const offsetAngle = angle + (isRightPaw ? Math.PI / 2 : -Math.PI / 2);
+
+                const finalX = x + Math.cos(offsetAngle) * spread;
+                const finalY = y + Math.sin(offsetAngle) * spread;
+
+                const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+                use.setAttributeNS(null, "href", "#paw-print");
+                use.setAttributeNS(null, "width", size);
+                use.setAttributeNS(null, "height", size);
+                use.setAttributeNS(null, "x", finalX - (size / 2));
+                use.setAttributeNS(null, "y", finalY - (size / 2));
+
+                const rotation = (angle * 180 / Math.PI) + 90;
+                use.setAttributeNS(null, "transform", `rotate(${rotation}, ${finalX}, ${finalY})`);
+                use.classList.add('dynamic-paw');
+
+                group.appendChild(use);
+
+                setTimeout(() => {
+                    use.classList.add('fade-out');
+                    setTimeout(() => {
+                        if (use.parentNode) {
+                            use.parentNode.removeChild(use);
+                        }
+                    }, 500);
+                }, 500);
+            }
+
+            const modal = document.getElementById("contact-modal");
+            const btn = document.getElementById("contact-btn");
+            const span = document.getElementsByClassName("close-btn")[0];
+            const form = document.getElementById("contact-form");
+
+            btn.onclick = function () {
+                modal.style.display = "block";
+            }
+
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            form.onsubmit = function (e) {
+                e.preventDefault();
+                alert("문의가 성공적으로 접수되었습니다! 🐶");
+                modal.style.display = "none";
+                form.reset();
+            }
+        });
+    </script>
+</body>
+
+</html>
