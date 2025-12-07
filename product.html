@@ -28,12 +28,19 @@
 
         body {
             background-color: #ffffff;
-            font-family: "agahnsangsoo2012", sans-serif;
-            font-weight: 500;
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            font-weight: 400;
             font-style: normal;
             color: #333;
             overflow-x: hidden;
             user-select: none;
+        }
+
+        /* 헤더와 푸터는 안상수체 유지 */
+        .site-header,
+        .site-footer {
+            font-family: "agahnsangsoo2012", sans-serif;
+            font-weight: 700;
         }
 
         /* 배경 발자국 컨테이너 */
@@ -633,6 +640,13 @@
             margin-top: 5px;
         }
 
+        .detail-item p strong {
+            font-family: "agahnsangsoo2012", sans-serif;
+            font-weight: 700;
+            font-size: 1.2em;
+            /* 강조를 위해 약간 키움 */
+        }
+
         @media (max-width: 768px) {
             .product-main {
                 flex-direction: column;
@@ -678,6 +692,21 @@
             padding: 20px;
             flex-direction: column;
         }
+
+        /* SVG 텍스트 대체 스타일 */
+        .svg-text {
+            display: inline-block;
+            height: 1em;
+            /* 현재 폰트 크기에 맞춤 */
+            width: auto;
+            vertical-align: -0.1em;
+            /* 텍스트 베이스라인 보정 */
+        }
+
+        .svg-text path {
+            fill: currentColor;
+            /* 부모 텍스트 색상 상속 */
+        }
     </style>
 </head>
 
@@ -720,13 +749,12 @@
                 <img src="image/Gemini_Generated_Image_f7yoi6f7yoi6f7yo.png" alt="강아지 목줄 메인">
             </div>
             <div class="product-info-area">
-                <h1>사랑을 담아 만든 단 하나의 목줄</h1>
+                <h1>사랑을 담아 만든<br>단 하나의 하네스</h1>
                 <p class="price">35,000 KRW</p>
                 <p class="desc">
-                    우리 아이의 일상을 가장 가까이에서 지켜주는 목줄.<br>
-                    천연 가죽의 부드러움과 시간이 지날수록 깊어지는 감성을 담았습니다.<br>
-                    당신이 떠올린 반려동물의 모습 그대로,<br>
-                    이니셜 각인 서비스로 세상에 단 하나뿐인 목줄을 선물하세요.<br </p>
+                    우리 아이의 일상을 가장 가까이에서 지켜주는 하네스.<br>
+                    생활 방수 기능 소재로 어디서든 편안하게 착용할 수 있습니다.<br>
+                    사랑하는 반려동물의 특색을 나만의 패턴으로 커스텀하세요.<br> </p>
 
                 <div class="options">
                     <label>패턴 선택</label>
@@ -797,8 +825,12 @@
                 <p class="footer-copy">© 2025 iLoveDog. All rights reserved.</p>
             </div>
             <div class="footer-right">
-                <a href="#">인스타그램</a>
-                <a href="#">유튜브</a>
+                <a href="https://www.instagram.com/help_angel_doggies/" target="_blank">인<svg class="svg-text"
+                        viewBox="108 10 22 35">
+                        <path
+                            d="M118.5,15.1l8,15.9-4.1,1.8-3.9-8.6-3.9,8.6-4.1-1.8,8-15.9ZM110.8,39.7v-4.5h15.6v4.5h-15.6Z" />
+                    </svg>타그램</a>
+                <a href="https://www.youtube.com/watch?v=AQ1af3LPXK0" target="_blank">유튜브</a>
                 <a id="contact-btn">문의하기</a>
             </div>
         </div>
