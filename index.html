@@ -29,7 +29,7 @@
         body {
             background-color: #ffffff;
             font-family: "agahnsangsoo2012", sans-serif;
-            font-weight: 500;
+            font-weight: 700;
             font-style: normal;
             color: #333;
             overflow-x: hidden;
@@ -169,9 +169,11 @@
             padding-top: 110px;
             /* 여백 조정: 상단 헤더(100px) + 여유분 */
             padding-bottom: 2.24vw;
-            text-align: center;
-            position: relative;
             z-index: 5;
+            font-family: "sandoll-gongbyunggaktab", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+            text-align: center;
         }
 
         .intro-section h2 {
@@ -223,7 +225,7 @@
 
         .list-item {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: 1.12vw;
             transition: transform 0.3s ease;
             text-decoration: none;
@@ -283,7 +285,7 @@
         }
 
         .text-group {
-            padding-top: 0.28vw;
+            padding-top: 0;
         }
 
         .text-group h4 {
@@ -536,6 +538,21 @@
                 display: flex;
             }
         }
+
+        /* SVG 텍스트 대체 스타일 */
+        .svg-text {
+            display: inline-block;
+            height: 1em;
+            /* 현재 폰트 크기에 맞춤 */
+            width: auto;
+            vertical-align: -0.1em;
+            /* 텍스트 베이스라인 보정 */
+        }
+
+        .svg-text path {
+            fill: currentColor;
+            /* 부모 텍스트 색상 상속 */
+        }
     </style>
 </head>
 
@@ -587,7 +604,7 @@
                 </div>
                 <div class="text-group">
                     <h4>Poodle 🐩</h4>
-                    <p>푸들 일러스트가<br>적용된 디자인</p>
+                    <p>귀여운 푸들이 적용된 디자인</p>
                 </div>
             </a>
 
@@ -599,7 +616,7 @@
                 </div>
                 <div class="text-group">
                     <h4>Retriever 🦮</h4>
-                    <p>리트리버 일러스트가<br>적용된 디자인</p>
+                    <p>발랄한 리트리버가 적용된 디자인</p>
                 </div>
             </a>
 
@@ -611,7 +628,7 @@
                 </div>
                 <div class="text-group">
                     <h4>Jindo 🐕</h4>
-                    <p>진돗개 일러스트가<br>적용된 디자인</p>
+                    <p>새침한 진돗개가 적용된 디자인</p>
                 </div>
             </a>
 
@@ -623,7 +640,7 @@
                 </div>
                 <div class="text-group">
                     <h4>House 🏠</h4>
-                    <p>집 일러스트가<br>적용된 디자인</p>
+                    <p>따뜻한 집이 적용된 디자인</p>
                 </div>
             </a>
 
@@ -635,7 +652,7 @@
                 </div>
                 <div class="text-group">
                     <h4>Yummy 🍖</h4>
-                    <p>뼈다귀 간식 일러스트가<br>적용된 디자인</p>
+                    <p>맛있는 간식이 적용된 디자인</p>
                 </div>
             </a>
         </div>
@@ -661,8 +678,12 @@
                 <p class="footer-copy">© 2025 iLoveDog. All rights reserved.</p>
             </div>
             <div class="footer-right">
-                <a href="#">인스타그램</a>
-                <a href="#">유튜브</a>
+                <a href="https://www.instagram.com/help_angel_doggies/" target="_blank">인<svg class="svg-text"
+                        viewBox="108 10 22 35">
+                        <path
+                            d="M118.5,15.1l8,15.9-4.1,1.8-3.9-8.6-3.9,8.6-4.1-1.8,8-15.9ZM110.8,39.7v-4.5h15.6v4.5h-15.6Z" />
+                    </svg>타그램</a>
+                <a href="https://www.youtube.com/watch?v=AQ1af3LPXK0" target="_blank">유튜브</a>
                 <a id="contact-btn">문의하기</a>
             </div>
         </div>
