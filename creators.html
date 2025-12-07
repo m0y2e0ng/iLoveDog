@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iLoveDog - creators</title>
+    <title>iLoveDog</title>
 
     <!-- 1. 어도비 폰트(Typekit) 스크립트 -->
     <script>
@@ -496,35 +496,14 @@
             background-color: #555;
         }
 
-        @media (min-width: 2000px) {
-            .site-header {
-                height: 140px;
-            }
 
-            .header-logo {
-                font-size: 70px;
-            }
-
-            .small-img {
-                width: 260px;
-                height: 180px;
-            }
-
-            .text-group h4 {
-                font-size: 40px;
-            }
-
-            .text-group p {
-                font-size: 24px;
-            }
-        }
 
 
 
         /* --- 만든이들 페이지 스타일 --- */
         .creators-wrapper {
             max-width: 1000px;
-            margin: 150px auto 100px;
+            margin: 130px auto 100px;
             padding: 0 20px;
             position: relative;
             z-index: 10;
@@ -608,6 +587,43 @@
             font-size: 14px;
             color: #999;
             line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+
+            /* Hide main content on mobile */
+            .site-header,
+            .creators-wrapper,
+            .site-footer,
+            #paw-container,
+            #contact-modal {
+                display: none !important;
+            }
+
+            /* Show mobile message */
+            #mobile-message {
+                display: flex;
+            }
+        }
+
+        /* Mobile Message Overlay */
+        #mobile-message {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            padding: 20px;
+            flex-direction: column;
         }
     </style>
 </head>
@@ -861,6 +877,10 @@
             }
         });
     </script>
+    <!-- 모바일 안내 메시지 -->
+    <div id="mobile-message">
+        <p>We are still building it...;;</p>
+    </div>
 </body>
 
 </html>
